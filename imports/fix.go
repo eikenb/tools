@@ -181,7 +181,9 @@ func collectReferences(refs map[string]map[string]bool) visitFn {
 	return visitor
 }
 
-func fixImports(fset *token.FileSet, f *ast.File, filename string) (added []string, err error) {
+// FixImports adjusts imports in file'a AST and returns a list of the added
+// imports.
+func FixImports(fset *token.FileSet, f *ast.File, filename string) (added []string, err error) {
 	// refs are a set of possible package references currently unsatisfied by imports.
 	// first key: either base package (e.g. "fmt") or renamed package
 	// second key: referenced package symbol (e.g. "Println")
@@ -196,7 +198,7 @@ func fixImports(fset *token.FileSet, f *ast.File, filename string) (added []stri
 	}
 	srcDir := filepath.Dir(abs)
 	if Debug {
-		log.Printf("fixImports(filename=%q), abs=%q, srcDir=%q ...", filename, abs, srcDir)
+		log.Printf("FixImports(filename=%q), abs=%q, srcDir=%q ...", filename, abs, srcDir)
 	}
 
 	var packageInfo *packageInfo
